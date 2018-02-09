@@ -1,0 +1,13 @@
+{
+  "name": "hoffmann/websearch.my",
+  "authors": [
+    {
+      "name": "Hoffmann Richard",
+      "email": "hoffmann_richard@inbox.ru"
+    }
+  ],
+  "require": {},
+  "autoload": {
+    "psr-4": {"App\\": "src/"}
+  }
+}
