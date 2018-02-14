@@ -151,7 +151,7 @@ class SearchController extends Controller
     private function handleYandexErrors(\stdClass $query)
     {
         if ($query->response->error) {
-            if ($query->response->error = "Sorry, there are no results for this search") {
+            if ($query->response->error == "Sorry, there are no results for this search") {
                 $this->view->data->info_message = $query->response->error . ".";
                 return;
             } else {
