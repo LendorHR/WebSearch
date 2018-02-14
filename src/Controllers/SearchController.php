@@ -15,10 +15,14 @@ class SearchController extends Controller
 {
     public function googleAction()
     {
-        if (key_exists('search_query', $_GET)) {
-            $this->searchQueryInGoogle((string) $_GET['search_query']);
+        if (property_exists($this->configs->search_engines, 'google')) {
+            if (key_exists('search_query', $_GET)) {
+                $this->searchQueryInGoogle((string)$_GET['search_query']);
+            }
+            $this->view->render('search/index.phtml');
+        } else {
+            header('Location:/404');
         }
-        $this->view->render('search/index.phtml');
     }
 
     private function searchQueryInGoogle(string $query)
@@ -78,10 +82,14 @@ class SearchController extends Controller
 
     public function yandexAction()
     {
-        if (key_exists('search_query', $_GET)) {
-            $this->searchQueryInYandex((string) $_GET['search_query']);
+        if (property_exists($this->configs->search_engines, 'yandex')) {
+            if (key_exists('search_query', $_GET)) {
+                $this->searchQueryInYandex((string)$_GET['search_query']);
+            }
+            $this->view->render('search/index.phtml');
+        } else {
+            header('Location:/404');
         }
-        $this->view->render('search/index.phtml');
     }
 
     private function searchQueryInYandex(string $query) {
