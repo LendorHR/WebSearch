@@ -13,7 +13,7 @@ use App\Controllers\SearchController;
 
 class Router
 {
-    static $route;
+    static public $route;
 
     static public function start()
     {
@@ -30,20 +30,22 @@ class Router
 
         if (self::$route->path != '' && count(explode('/', self::$route->path)) <= 1) {
             if (self::$route->path == '404') {
-                header('HTTP/1.1 404 Not Found');
-                header("Status: 404 Not Found");
-                exit("<h1>Page not found</h1>");
+                http_response_code(404);
+
+                exit("<h1>Page not found</h1>\n<p>Go to <a href='/google'>the main page</a></p> ");
             } else {
                 return self::$route->path . 'Action';
             }
         } else {
             header('Location: /' . $standard_action);
         }
+        return false;
     }
 
     private function checkGetQuery() {
         if (property_exists(self::$route, 'query')) {
             parse_str(self::$route->query, $params);
+
             if (key($params) != 'search_query' || $params['search_query'] == '') {
                 header('Location: /' . self::$route->path);
             } elseif (count($params) > 1) {

@@ -1,7 +1,6 @@
-function createSearchCleaner() {
+function addEventsForSearchInputClearButton() {
     $('#search_input').on('input propertychange', function () {
         var visible = Boolean($(this).val());
-
         $('#search_clear').toggleClass('hidden', !visible);
     }).trigger('propertychange');
 
@@ -10,7 +9,7 @@ function createSearchCleaner() {
     });
 }
 
-function fillInputWithQuery() {
+function fillSearchInputWithQuery() {
     var pageURL = window.location.search.substring(1),
         urlVariables = pageURL.split('&'),
         parameters;
@@ -26,6 +25,6 @@ function fillInputWithQuery() {
 }
 
 $(function main() {
-    createSearchCleaner();
-    fillInputWithQuery();
+    addEventsForSearchInputClearButton();
+    fillSearchInputWithQuery();
 });

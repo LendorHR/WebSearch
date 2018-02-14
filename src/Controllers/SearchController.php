@@ -19,6 +19,7 @@ class SearchController extends Controller
             if (key_exists('search_query', $_GET)) {
                 $this->searchQueryInGoogle((string)$_GET['search_query']);
             }
+
             $this->view->render('search/index.phtml');
         } else {
             header('Location:/404');
@@ -27,15 +28,19 @@ class SearchController extends Controller
 
     private function searchQueryInGoogle(string $query)
     {
-        $url = "https://www.googleapis.com/customsearch/v1" .
+        $query_url = "https://www.googleapis.com/customsearch/v1" .
             "?key=" . $this->configs->search_engines->google->api_key .
             "&cx=" . $this->configs->search_engines->google->custom_search_cx .
             "&num=" . $this->configs->global->number_of_results .
             "&q=" . urlencode($query);
 
-        if ($json_data = $this->sendQueryToApi($url)) {
+        if ($json_data = $this->sendQueryToApi($query_url)) {
+            // I decided to use the tag 'mark' instead of the tag 'b'
+
             $json_data = str_replace(['\u003cb\u003e', '\u003c/b\u003e'], ["<mark>", "</mark>"], $json_data);
+
             $result = json_decode($json_data);
+
             if (property_exists($result, "error")) {
                 $this->handleGoogleErrors($result);
             } else {
@@ -70,6 +75,10 @@ class SearchController extends Controller
         }
     }
 
+    /*
+     * If there are no search results for the query, Google can offer a corrected query.
+     * This method implements the search for the corrected query.
+     */
     private function searchCorrectedQuery(\stdClass $result) {
         if (property_exists($result, "spelling")) {
             if ($this->searchQueryInGoogle($result->spelling->correctedQuery)) {
@@ -86,6 +95,7 @@ class SearchController extends Controller
             if (key_exists('search_query', $_GET)) {
                 $this->searchQueryInYandex((string)$_GET['search_query']);
             }
+
             $this->view->render('search/index.phtml');
         } else {
             header('Location:/404');
@@ -93,7 +103,7 @@ class SearchController extends Controller
     }
 
     private function searchQueryInYandex(string $query) {
-        $url = "https://yandex.com/search/xml" .
+        $query_url = "https://yandex.com/search/xml" .
             "?user=" . $this->configs->search_engines->yandex->user_name .
             "&key=" . $this->configs->search_engines->yandex->api_key .
             "&query=" . urlencode($query) .
@@ -106,11 +116,15 @@ class SearchController extends Controller
                 ".groups-on-page%3D" . $this->configs->global->number_of_results .
                 ".docs-in-group%3D" . 1;
 
-        if ($xml_data = $this->sendQueryToApi($url)) {
+        if ($xml_data = $this->sendQueryToApi($query_url)) {
+            // This magic happens, because to decode from xml and don't lose data,
+            // it's necessary to replace the 'hlword' tag with something else
+
             $xml_data = str_replace(["<hlword>", "</hlword>"], ["[mark]", "[/mark]"], $xml_data);
 
             $json_data = json_encode(simplexml_load_string($xml_data));
             $json_data = str_replace(["[mark]", "[\\/mark]"], ["<mark>", "</mark>"], $json_data);
+
             $result = json_decode($json_data);
 
             if (property_exists($result->response, "error")) {
@@ -150,12 +164,15 @@ class SearchController extends Controller
     private function sendQueryToApi(string $url)
     {
         $curl = curl_init();
+
         curl_setopt($curl, CURLOPT_URL, $url);
         curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
+
         if (!($response_data = curl_exec($curl))) {
             $this->view->data->error_message = "<strong>cURL error:</strong> " . curl_error($curl);
             return false;
         }
+
         curl_close($curl);
 
         return $response_data;
