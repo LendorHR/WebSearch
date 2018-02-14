@@ -27,18 +27,20 @@
 
 <?php if (property_exists($data, 'info_message')): ?>
     <div class="alert alert-info">
+        <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
         <?= $data->info_message; ?>
     </div>
 <?php endif; ?>
 
 <?php if (property_exists($data, 'error_message')): ?>
     <div class="alert alert-danger">
+        <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
         <span class="glyphicon glyphicon-warning-sign"></span> <?= $data->error_message; ?>
     </div>
 <?php endif; ?>
 
 <?php if (property_exists($data, 'items')): ?>
-    <table id="search_results" class="table table-striped table-bordered">
+    <table id="search_results" class="table table-striped table-bordered table-responsive">
         <thead>
             <tr>
                 <th>Title</th>

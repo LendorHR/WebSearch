@@ -36,3 +36,11 @@
 .alert, #search_results {
     margin-top: 20px;
 }
+
+#search_results {
+    table-layout: fixed;
+}
+
+#search_results td{
+    word-wrap: break-word;
+}
