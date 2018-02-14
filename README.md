@@ -1,8 +1,8 @@
 Installation
 ------------
 
-Simply create a directory in the 'www' folder of Apache and copy the 
-contents of the archive there.
+Simply create a directory in the 'www' folder of Apache and copy project 
+files there.
 
 Then you should create a .conf file in 'sites-available' folder of Apache 
 and add to it:
