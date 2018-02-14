@@ -1,0 +1,15 @@
+{
+  "global": {
+    "number_of_results": 5
+  },
+  "search_engines": {
+    "google": {
+      "api_key": "AIzaSyD0zhDvLskZe3J78Sh2XKpoQb69Gy2YO5A",
+      "custom_search_cx": "000627551248173839280:akgjsqi-jok"
+    },
+    "yandex": {
+      "api_key": "03.596515843:02242ba1d2095d73281b0d03cdd3663f",
+      "user_name": "vebrandhr"
+    }
+  }
+}

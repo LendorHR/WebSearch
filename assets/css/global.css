@@ -1,0 +1,38 @@
+@charset "UTF-8";
+
+.container {
+    max-width: 768px;
+}
+
+.container #logo {
+    margin: 60px auto 40px;
+    text-align: center;
+}
+
+.container #logo a {
+    font-size: 48px;
+    font-weight: bold;
+    letter-spacing: 6px;
+    color: #777;
+    text-decoration: none;
+}
+
+#search_input {
+    border-left: none;
+    border-radius: 0;
+}
+
+#search_clear {
+    color: #999;
+    z-index: 10;
+    pointer-events: auto;
+    cursor: pointer;
+}
+
+#search_clear:hover, #search_clear:focus {
+    color: #555;
+}
+
+.alert, #search_results {
+    margin-top: 20px;
+}

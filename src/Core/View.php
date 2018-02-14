@@ -11,8 +11,21 @@ namespace App\Core;
 
 class View
 {
-    public function render(string $content_view, \stdClass $data = NULL)
+    public $configs;
+    public $data;
+
+    public function __construct()
     {
+        $this->data = new \stdClass();
+    }
+
+    public function render(string $content_view)
+    {
+        $configs = $this->configs;
+
+        $data = $this->data;
+        $data->route = Router::$route;
+
         include __DIR__.'/../Views/base.phtml';
     }
 }

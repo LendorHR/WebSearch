@@ -1,0 +1,59 @@
+<form class="input-group" method="get">
+    <div class="input-group-btn">
+        <button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown">
+            <?= ucfirst($data->route->path); ?>
+            <span class="caret"></span>
+        </button>
+        <ul class="dropdown-menu">
+            <?php foreach ($configs->search_engines as $search_engine_name => $search_engine): ?>
+                <li <?= (strtolower($search_engine_name) == strtolower($data->route->path))? 'class="active"' : ''; ?>>
+                    <a href="/<?= strtolower($search_engine_name . ((property_exists($data->route, 'query'))? '?' . $data->route->query: '')); ?>">
+                        <?= ucfirst($search_engine_name); ?>
+                    </a>
+                </li>
+            <?php endforeach; ?>
+        </ul>
+    </div>
+    <div class="form-group has-feedback has-clear">
+        <input id="search_input" type="search" class="form-control" placeholder="Search" name="search_query">
+        <span id="search_clear" class="glyphicon glyphicon-remove-circle form-control-feedback hidden"></span>
+    </div>
+    <div class="input-group-btn">
+        <button class="btn btn-default" type="submit">
+            <span class="glyphicon glyphicon-search"></span>
+        </button>
+    </div>
+</form>
+
+<?php if (property_exists($data, 'info_message')): ?>
+    <div class="alert alert-info">
+        <?= $data->info_message; ?>
+    </div>
+<?php endif; ?>
+
+<?php if (property_exists($data, 'error_message')): ?>
+    <div class="alert alert-danger">
+        <span class="glyphicon glyphicon-warning-sign"></span> <?= $data->error_message; ?>
+    </div>
+<?php endif; ?>
+
+<?php if (property_exists($data, 'items')): ?>
+    <table id="search_results" class="table table-striped table-bordered">
+        <thead>
+            <tr>
+                <th>Title</th>
+                <th>Link</th>
+                <th>Text</th>
+            </tr>
+        </thead>
+        <tbody>
+            <?php foreach ($data->items as $item): ?>
+                <tr>
+                    <td><?= $item->title; ?></td>
+                    <td><a href="<?= $item->link; ?>"><?= $item->link; ?></a></td>
+                    <td><?= $item->text; ?></td>
+                </tr>
+            <?php endforeach; ?>
+        </tbody>
+    </table>
+<?php endif; ?>
